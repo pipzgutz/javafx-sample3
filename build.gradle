@@ -1,0 +1,50 @@
+buildscript {
+    ext.kotlin_version = '1.1.60'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply plugin: "kotlin"
+apply plugin: 'application'
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+}
+
+dependencies {
+    compile 'no.tornado:tornadofx:1.7.12'
+    compile 'com.jfoenix:jfoenix:1.10.0'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    testCompile 'junit:junit:4.12'
+}
+
+mainClassName = 'com.owens.javafxsample.app.MyApp'
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'com.owens.javafxsample.app.MyApp'
+        )
+    }
+    from(configurations.compile.collect { entry -> zipTree(entry) }) {
+        exclude 'META-INF/MANIFEST.MF'
+        exclude 'META-INF/*.SF'
+        exclude 'META-INF/*.DSA'
+        exclude 'META-INF/*.RSA'
+    }
+}
