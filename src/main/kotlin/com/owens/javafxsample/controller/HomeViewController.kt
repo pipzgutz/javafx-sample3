@@ -1,6 +1,6 @@
 package com.owens.javafxsample.controller
 
-import javafx.event.ActionEvent
+import com.owens.javafxsample.model.Addon
 import tornadofx.*
 
 /**
@@ -9,5 +9,7 @@ import tornadofx.*
  * @version 1.0
  */
 class HomeViewController : Controller() {
-    fun greet(event: ActionEvent) = println("Hello World")
+
+    fun getAddons(): List<Addon> = listOf(Addon("Bacon"), Addon("Tuna", true), Addon("Lettuce"), Addon("Tomato"))
 }
+

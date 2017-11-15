@@ -1,35 +1,71 @@
 package com.owens.javafxsample.view
 
-import javafx.geometry.HPos
-import javafx.geometry.VPos
-import javafx.scene.layout.GridPane
+import com.owens.javafxsample.controller.HomeViewController
+import com.owens.javafxsample.model.Addon
+import javafx.event.EventHandler
+import javafx.scene.control.CheckBox
 import tornadofx.*
 
-class HomeView : View("Title here") {
+class HomeView : View("Bucky's Subs") {
+    val controller: HomeViewController by inject()
+    var selectedAddons: List<Addon> = mutableListOf()
 
-    override val root = gridpane {
-        padding = insets(10.0)
-        vgap = 8.0
-        hgap = 10.0
+    init {
+        val addons = controller.getAddons()
 
-        GridPane.setConstraints(label {
-            text = "Username"
-        }, 0, 0)
+        addons.forEach { addon ->
+            run {
+                if (addon.isSelected) {
+                    selectedAddons += addon
+                }
+            }
+        }
+    }
 
-        GridPane.setConstraints(textfield {
-            promptText = "Username"
-        }, 1, 0)
+    override val root = vbox {
+        prefWidth = 300.0
+        prefHeight = 200.0
+        spacing = 10.0
+        padding = insets(20.0)
 
-        GridPane.setConstraints(label {
-            text = "Password"
-        }, 0, 1)
+        controller.getAddons().forEach { addon ->
+            checkbox {
+                text = addon.name
+                isSelected = addon.isSelected
+                onAction = EventHandler { event ->
+                    run {
+                        val cb = event.source as CheckBox
+                        if (cb.isSelected) {
+                            selectedAddons += addon
+                        } else {
+                            selectedAddons -= addon
+                        }
+                    }
+                }
+            }
+        }
 
-        GridPane.setConstraints(passwordfield {
-            promptText = "Password"
-        }, 1, 1)
+        button {
+            text = "Order Now!"
+            onAction = EventHandler { event ->
+                run {
+                    println(getMessageForSelectedAddons(selectedAddons))
+                }
+            }
+        }
+    }
 
-        GridPane.setConstraints(button {
-            text = "Login"
-        }, 1, 2, 1, 1, HPos.RIGHT, VPos.CENTER)
+    fun getMessageForSelectedAddons(addons: List<Addon>): String {
+        var choices = ""
+
+        addons.forEachIndexed { index, addon ->
+            choices += addon.name
+
+            if (addons.size - 1 != index) {
+                choices += ", "
+            }
+        }
+
+        return if (addons.size == 1) "Your choice is $choices" else "Your choices are $choices"
     }
 }
