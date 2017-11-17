@@ -1,6 +1,5 @@
 package com.owens.javafxsample.controller
 
-import com.owens.javafxsample.model.Addon
 import tornadofx.*
 
 /**
@@ -10,6 +9,5 @@ import tornadofx.*
  */
 class HomeViewController : Controller() {
 
-    fun getAddons(): List<Addon> = listOf(Addon("Bacon"), Addon("Tuna", true), Addon("Lettuce"), Addon("Tomato"))
 }
 
