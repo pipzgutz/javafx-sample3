@@ -4,12 +4,9 @@ import tornadofx.*
 
 /**
  * @author Philip Mark Gutierrez <pgutierrez@owens.com>
- * @since November 14, 2017
+ * @since November 17, 2017
  * @version 1.0
  */
-class HomeViewController : Controller() {
-    fun goToRegister() {
-        println("test")
-    }
-}
+class RegisterViewController : Controller() {
 
+}
